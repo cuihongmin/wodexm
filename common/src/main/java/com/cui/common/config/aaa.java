@@ -24,6 +24,7 @@ public class aaa {
         // 验证git
         // 二次验证git
         System.out.println("热修分支的修改");
+        System.out.println("master test");
 
         System.out.println(str);
     }
