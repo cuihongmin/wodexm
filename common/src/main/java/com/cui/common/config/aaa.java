@@ -23,6 +23,7 @@ public class aaa {
         System.out.println("请输入字符串:");
         // 验证git
         // 二次验证git
+        System.out.println("热修分支的修改");
 
         System.out.println(str);
     }
