@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.publishfeedback.mapper.BusAlarmWayMapper">
+    
+    <resultMap type="BusAlarmWay" id="BusAlarmWayResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+    </resultMap>
+
+    <sql id="selectBusAlarmWayVo">
+        select id, code, name from bus_alarm_way
+    </sql>
+
+    <select id="selectBusAlarmWayList" parameterType="BusAlarmWay" resultMap="BusAlarmWayResult">
+        <include refid="selectBusAlarmWayVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBusAlarmWayById" parameterType="Long" resultMap="BusAlarmWayResult">
+        <include refid="selectBusAlarmWayVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusAlarmWay" parameterType="BusAlarmWay">
+        insert into bus_alarm_way
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="code != null">code,</if>
+            <if test="name != null">name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusAlarmWay" parameterType="BusAlarmWay">
+        update bus_alarm_way
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="name != null">name = #{name},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusAlarmWayById" parameterType="Long">
+        delete from bus_alarm_way where id = #{id}
+    </delete>
+
+    <delete id="deleteBusAlarmWayByIds" parameterType="String">
+        delete from bus_alarm_way where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

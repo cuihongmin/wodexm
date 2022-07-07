@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.syswarn.mapper.BusWarnConfigWarnTypeRelatMapper">
+    
+    <resultMap type="BusWarnConfigWarnTypeRelat" id="BusWarnConfigWarnTypeRelatResult">
+        <result property="id"    column="id"    />
+        <result property="warnTypeId"    column="warn_type_id"    />
+        <result property="warnConfigId"    column="warn_config_id"    />
+    </resultMap>
+
+    <sql id="selectBusWarnConfigWarnTypeRelatVo">
+        select id, warn_type_id, warn_config_id from bus_warn_config_warn_type_relat
+    </sql>
+
+    <select id="selectBusWarnConfigWarnTypeRelatList" parameterType="BusWarnConfigWarnTypeRelat" resultMap="BusWarnConfigWarnTypeRelatResult">
+        <include refid="selectBusWarnConfigWarnTypeRelatVo"/>
+        <where>  
+            <if test="warnTypeId != null "> and warn_type_id = #{warnTypeId}</if>
+            <if test="warnConfigId != null "> and warn_config_id = #{warnConfigId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusWarnConfigWarnTypeRelatById" parameterType="Long" resultMap="BusWarnConfigWarnTypeRelatResult">
+        <include refid="selectBusWarnConfigWarnTypeRelatVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusWarnConfigWarnTypeRelat" parameterType="BusWarnConfigWarnTypeRelat">
+        insert into bus_warn_config_warn_type_relat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="warnTypeId != null">warn_type_id,</if>
+            <if test="warnConfigId != null">warn_config_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="warnTypeId != null">#{warnTypeId},</if>
+            <if test="warnConfigId != null">#{warnConfigId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusWarnConfigWarnTypeRelat" parameterType="BusWarnConfigWarnTypeRelat">
+        update bus_warn_config_warn_type_relat
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="warnTypeId != null">warn_type_id = #{warnTypeId},</if>
+            <if test="warnConfigId != null">warn_config_id = #{warnConfigId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusWarnConfigWarnTypeRelatById" parameterType="Long">
+        delete from bus_warn_config_warn_type_relat where id = #{id}
+    </delete>
+
+    <delete id="deleteBusWarnConfigWarnTypeRelatByIds" parameterType="String">
+        delete from bus_warn_config_warn_type_relat where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteByConfigId" parameterType="Long">
+        delete from bus_warn_config_warn_type_relat where warn_config_id = #{id}
+    </delete>
+</mapper>

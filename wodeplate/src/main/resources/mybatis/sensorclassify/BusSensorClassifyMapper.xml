@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.sensor.classify.mapper.BusSensorClassifyMapper">
+    
+    <resultMap type="BusSensorClassify" id="BusSensorClassifyResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="dataCollectCycle"    column="data_collect_cycle"    />
+        <result property="collectTimeUnit"    column="collect_time_unit"    />
+        <result property="code"    column="code"    />
+        <result property="path"    column="path"    />
+        <result property="state"    column="state"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="modifyBy"    column="modify_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="modifyTime"    column="modify_time"    />
+    </resultMap>
+
+    <sql id="selectBusSensorClassifyVo">
+        select id, name, data_collect_cycle, collect_time_unit, code, path, state, remark, create_by, modify_by, create_time, modify_time from bus_sensor_classify
+    </sql>
+
+    <select id="selectBusSensorClassifyList" parameterType="BusSensorClassify" resultMap="BusSensorClassifyResult">
+        <include refid="selectBusSensorClassifyVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="dataCollectCycle != null "> and data_collect_cycle = #{dataCollectCycle}</if>
+            <if test="collectTimeUnit != null  and collectTimeUnit != ''"> and collect_time_unit = #{collectTimeUnit}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="modifyBy != null "> and modify_by = #{modifyBy}</if>
+            <if test="modifyTime != null "> and modify_time = #{modifyTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusSensorClassifyById" parameterType="Long" resultMap="BusSensorClassifyResult">
+        <include refid="selectBusSensorClassifyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusSensorClassify" parameterType="BusSensorClassify">
+        insert into bus_sensor_classify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="dataCollectCycle != null">data_collect_cycle,</if>
+            <if test="collectTimeUnit != null">collect_time_unit,</if>
+            <if test="code != null">code,</if>
+            <if test="path != null">path,</if>
+            <if test="state != null">state,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="modifyBy != null">modify_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="modifyTime != null">modify_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="dataCollectCycle != null">#{dataCollectCycle},</if>
+            <if test="collectTimeUnit != null">#{collectTimeUnit},</if>
+            <if test="code != null">#{code},</if>
+            <if test="path != null">#{path},</if>
+            <if test="state != null">#{state},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="modifyBy != null">#{modifyBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="modifyTime != null">#{modifyTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusSensorClassify" parameterType="BusSensorClassify">
+        update bus_sensor_classify
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="dataCollectCycle != null">data_collect_cycle = #{dataCollectCycle},</if>
+            <if test="collectTimeUnit != null">collect_time_unit = #{collectTimeUnit},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="modifyBy != null">modify_by = #{modifyBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="modifyTime != null">modify_time = #{modifyTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusSensorClassifyById" parameterType="Long">
+        delete from bus_sensor_classify where id = #{id}
+    </delete>
+
+    <delete id="deleteBusSensorClassifyByIds" parameterType="String">
+        delete from bus_sensor_classify where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

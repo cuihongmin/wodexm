@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.equipmentindexrelat.mapper.BusEquipmentIndexRelatMapper">
+    
+    <resultMap type="BusEquipmentIndexRelat" id="BusEquipmentIndexRelatResult">
+        <result property="id"    column="id"    />
+        <result property="sensorId"    column="sensor_id"    />
+        <result property="indexId"    column="index_id"    />
+        <result property="code"    column="code"    />
+        <result property="priority"    column="priority"    />
+    </resultMap>
+
+    <sql id="selectBusEquipmentIndexRelatVo">
+        select id, sensor_id, index_id, code, priority from bus_equipment_index_relat
+    </sql>
+
+    <select id="selectBusEquipmentIndexRelatList" parameterType="BusEquipmentIndexRelat" resultMap="BusEquipmentIndexRelatResult">
+        <include refid="selectBusEquipmentIndexRelatVo"/>
+        <where>  
+            <if test="sensorId != null  and sensorId != ''"> and sensor_id = #{sensorId}</if>
+            <if test="indexId != null "> and index_id = #{indexId}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="priority != null "> and priority = #{priority}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusEquipmentIndexRelatById" parameterType="Long" resultMap="BusEquipmentIndexRelatResult">
+        <include refid="selectBusEquipmentIndexRelatVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusEquipmentIndexRelat" parameterType="BusEquipmentIndexRelat">
+        insert into bus_equipment_index_relat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="sensorId != null">sensor_id,</if>
+            <if test="indexId != null">index_id,</if>
+            <if test="code != null">code,</if>
+            <if test="priority != null">priority,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="sensorId != null">#{sensorId},</if>
+            <if test="indexId != null">#{indexId},</if>
+            <if test="code != null">#{code},</if>
+            <if test="priority != null">#{priority},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusEquipmentIndexRelat" parameterType="BusEquipmentIndexRelat">
+        update bus_equipment_index_relat
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sensorId != null">sensor_id = #{sensorId},</if>
+            <if test="indexId != null">index_id = #{indexId},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="priority != null">priority = #{priority},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusEquipmentIndexRelatById" parameterType="Long">
+        delete from bus_equipment_index_relat where id = #{id}
+    </delete>
+
+    <delete id="deleteBusEquipmentIndexRelatByIds" parameterType="String">
+        delete from bus_equipment_index_relat where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

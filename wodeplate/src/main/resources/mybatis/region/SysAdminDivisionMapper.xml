@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.region.mapper.SysAdminDivisionMapper">
+    
+    <resultMap type="SysAdminDivision" id="SysAdminDivisionResult">
+        <result property="id"    column="id"    />
+        <result property="regionName"    column="region_name"    />
+        <result property="regionLevel"    column="region_level"    />
+        <result property="regionCode"    column="region_code"    />
+        <result property="parentCode"    column="parent_code"    />
+    </resultMap>
+
+    <sql id="selectSysAdminDivisionVo">
+        select id, region_name, region_level, region_code, parent_code from sys_admin_division
+    </sql>
+
+    <select id="selectSysAdminDivisionList" parameterType="SysAdminDivision" resultMap="SysAdminDivisionResult">
+        <include refid="selectSysAdminDivisionVo"/>
+        <where>  
+            <if test="regionName != null  and regionName != ''"> and region_name like concat('%', #{regionName}, '%')</if>
+            <if test="regionLevel != null  and regionLevel != ''"> and region_level = #{regionLevel}</if>
+            <if test="regionCode != null  and regionCode != ''"> and region_code = #{regionCode}</if>
+            <if test="parentCode != null  and parentCode != ''"> and parent_code = #{parentCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysAdminDivisionById" parameterType="Long" resultMap="SysAdminDivisionResult">
+        <include refid="selectSysAdminDivisionVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysAdminDivision" parameterType="SysAdminDivision" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_admin_division
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="regionName != null and regionName != ''">region_name,</if>
+            <if test="regionLevel != null and regionLevel != ''">region_level,</if>
+            <if test="regionCode != null and regionCode != ''">region_code,</if>
+            <if test="parentCode != null and parentCode != ''">parent_code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="regionName != null and regionName != ''">#{regionName},</if>
+            <if test="regionLevel != null and regionLevel != ''">#{regionLevel},</if>
+            <if test="regionCode != null and regionCode != ''">#{regionCode},</if>
+            <if test="parentCode != null and parentCode != ''">#{parentCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysAdminDivision" parameterType="SysAdminDivision">
+        update sys_admin_division
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="regionName != null and regionName != ''">region_name = #{regionName},</if>
+            <if test="regionLevel != null and regionLevel != ''">region_level = #{regionLevel},</if>
+            <if test="regionCode != null and regionCode != ''">region_code = #{regionCode},</if>
+            <if test="parentCode != null and parentCode != ''">parent_code = #{parentCode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysAdminDivisionById" parameterType="Long">
+        delete from sys_admin_division where id = #{id}
+    </delete>
+
+    <delete id="deleteSysAdminDivisionByIds" parameterType="String">
+        delete from sys_admin_division where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

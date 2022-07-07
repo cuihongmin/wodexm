@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cui.user.dao.CertificatesFilesMapper">
+    <resultMap id="BaseResultMap" type="com.cui.user.entity.CertificatesFiles">
+        <result column="id" jdbcType="VARCHAR" property="id" />
+        <result column="modular" jdbcType="VARCHAR" property="modular" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="file_flow" jdbcType="LONGVARCHAR" property="fileFlow" />
+
+    </resultMap>
+
+    <insert id="insert" parameterType="com.cui.user.entity.CertificatesFiles">
+        insert into platform_certificates_files (id, modular, create_time, file_flow)
+        values (#{id,jdbcType=INTEGER}, #{modular,jdbcType=VARCHAR}, now(),
+      #{fileFlow,jdbcType=LONGVARCHAR})
+    </insert>
+
+    <select id="getFileById" resultType="java.lang.String">
+ 	 SELECT file_flow FROM platform_certificates_files WHERE id = #{id}
+  </select>
+
+    <select id="getPicTureById" resultType="java.lang.String">
+ 	 SELECT modular FROM platform_certificates_files WHERE id = #{id}
+  </select>
+
+    <insert id="insertList" parameterType="com.cui.user.entity.CertificatesFiles">
+        insert into platform_certificates_files (id, modular, create_time,
+        file_flow)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.modular,jdbcType=VARCHAR}, now(),
+            #{item.fileFlow,jdbcType=LONGVARCHAR})
+        </foreach>
+    </insert>
+</mapper>

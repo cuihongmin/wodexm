@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.datacollect.mapper.BusArtificialPatrolMapper">
+    
+    <resultMap type="com.wanqiao.mogao.project.datacollect.domain.BusArtificialPatrol" id="BusArtificialPatrolResult">
+        <result property="id"    column="id"    />
+        <result property="patrolTime"    column="patrol_time"    />
+        <result property="patrolTypeId"    column="patrol_type_id"    />
+        <result property="safetyAssessment"    column="safety_assessment"    />
+        <result property="patrolPerson"    column="patrol_person"    />
+        <result property="patrolDetails"    column="patrol_details"    />
+        <result property="files"    column="files"    />
+        <result property="releaseContent"    column="release_content"    />
+        <result property="stateRelease"    column="state_release"    />
+        <result property="acceptBy"    column="accept_by"    />
+        <result property="acceptByName"    column="accept_by_name"    />
+        <result property="warnState"    column="warn_state"    />
+        <result property="remark"    column="remark"    />
+        <result property="warnRelieveTime"    column="warn_relieve_time"    />
+        <result property="relieveDetails"    column="relieve_details"    />
+        <result property="relieveBy"    column="relieve_by"    />
+        <result property="relieveByName"    column="relieve_by_name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBusArtificialPatrolVo">
+        select t1.id, t1.patrol_time, t1.patrol_type_id, t1.safety_assessment,
+        t1.patrol_person, t1.patrol_details, t1.files, t1.release_content, t1.state_release,
+        t1.accept_by,t1.accept_by_name, t1.warn_state, t1.remark, t1.warn_relieve_time, t1.relieve_details,
+        t1.relieve_by, t3.nick_name as relieve_by_name, t2.nick_name as create_by, t1.create_time, t1.update_by, t1.update_time
+        from bus_artificial_patrol t1
+        left join sys_user t2 on t1.create_by = t2.user_id
+        left join sys_user t3 on t1.relieve_by = t3.user_id
+    </sql>
+
+    <select id="selectBusArtificialPatrolList" parameterType="com.wanqiao.mogao.project.datacollect.domain.BusArtificialPatrol" resultMap="BusArtificialPatrolResult">
+        <include refid="selectBusArtificialPatrolVo"/>
+        <where>  
+            <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(patrol_time,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
+            </if>
+            <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+                and date_format(patrol_time,'%y%m%d') &lt;= date_format(#{endTime},'%y%m%d')
+            </if>
+            <if test="patrolTypeId != null "> and patrol_type_id = #{patrolTypeId}</if>
+            <if test="safetyAssessment != null "> and safety_assessment = #{safetyAssessment}</if>
+            <if test="patrolPerson != null  and patrolPerson != ''"> and patrol_person = #{patrolPerson}</if>
+            <if test="patrolDetails != null  and patrolDetails != ''"> and patrol_details = #{patrolDetails}</if>
+            <if test="files != null  and files != ''"> and files = #{files}</if>
+            <if test="releaseContent != null  and releaseContent != ''"> and release_content = #{releaseContent}</if>
+            <if test="stateRelease != null  and stateRelease != ''"> and state_release = #{stateRelease}</if>
+            <if test="acceptBy != null  and acceptBy != ''"> and accept_by = #{acceptBy}</if>
+            <if test="acceptByName != null  and acceptByName != ''"> and accept_by_name = #{acceptByName}</if>
+            <if test="warnState != null  and warnState != ''"> and warn_state = #{warnState}</if>
+            <if test="warnRelieveTime != null "> and warn_relieve_time = #{warnRelieveTime}</if>
+            <if test="relieveDetails != null  and relieveDetails != ''"> and relieve_details = #{relieveDetails}</if>
+            <if test="relieveBy != null  and relieveBy != ''"> and relieve_by = #{relieveBy}</if>
+        </where>
+        order by patrol_time desc
+    </select>
+    
+    <select id="selectBusArtificialPatrolById" parameterType="Long" resultMap="BusArtificialPatrolResult">
+        <include refid="selectBusArtificialPatrolVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusArtificialPatrol" parameterType="com.wanqiao.mogao.project.datacollect.domain.BusArtificialPatrol">
+        insert into bus_artificial_patrol
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="patrolTime != null">patrol_time,</if>
+            <if test="patrolTypeId != null">patrol_type_id,</if>
+            <if test="safetyAssessment != null">safety_assessment,</if>
+            <if test="patrolPerson != null">patrol_person,</if>
+            <if test="patrolDetails != null">patrol_details,</if>
+            <if test="files != null">files,</if>
+            <if test="releaseContent != null">release_content,</if>
+            <if test="stateRelease != null">state_release,</if>
+            <if test="acceptBy != null">accept_by,</if>
+            <if test="acceptByName != null">accept_by_name,</if>
+            <if test="warnState != null">warn_state,</if>
+            <if test="remark != null">remark,</if>
+            <if test="warnRelieveTime != null">warn_relieve_time,</if>
+            <if test="relieveDetails != null">relieve_details,</if>
+            <if test="relieveBy != null">relieve_by,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="patrolTime != null">#{patrolTime},</if>
+            <if test="patrolTypeId != null">#{patrolTypeId},</if>
+            <if test="safetyAssessment != null">#{safetyAssessment},</if>
+            <if test="patrolPerson != null">#{patrolPerson},</if>
+            <if test="patrolDetails != null">#{patrolDetails},</if>
+            <if test="files != null">#{files},</if>
+            <if test="releaseContent != null">#{releaseContent},</if>
+            <if test="stateRelease != null">#{stateRelease},</if>
+            <if test="acceptBy != null">#{acceptBy},</if>
+            <if test="acceptByName != null">#{acceptByName},</if>
+            <if test="warnState != null">#{warnState},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="warnRelieveTime != null">#{warnRelieveTime},</if>
+            <if test="relieveDetails != null">#{relieveDetails},</if>
+            <if test="relieveBy != null">#{relieveBy},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusArtificialPatrol" parameterType="com.wanqiao.mogao.project.datacollect.domain.BusArtificialPatrol">
+        update bus_artificial_patrol
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="patrolTime != null">patrol_time = #{patrolTime},</if>
+            <if test="patrolTypeId != null">patrol_type_id = #{patrolTypeId},</if>
+            <if test="safetyAssessment != null">safety_assessment = #{safetyAssessment},</if>
+            <if test="patrolPerson != null">patrol_person = #{patrolPerson},</if>
+            <if test="patrolDetails != null">patrol_details = #{patrolDetails},</if>
+            <if test="files != null">files = #{files},</if>
+            <if test="releaseContent != null">release_content = #{releaseContent},</if>
+            <if test="stateRelease != null">state_release = #{stateRelease},</if>
+            <if test="acceptBy != null">accept_by = #{acceptBy},</if>
+            <if test="acceptByName != null">accept_by_name = #{acceptByName},</if>
+            <if test="warnState != null">warn_state = #{warnState},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="warnRelieveTime != null">warn_relieve_time = #{warnRelieveTime},</if>
+            <if test="relieveDetails != null">relieve_details = #{relieveDetails},</if>
+            <if test="relieveBy != null">relieve_by = #{relieveBy},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusArtificialPatrolById" parameterType="Long">
+        delete from bus_artificial_patrol where id = #{id}
+    </delete>
+
+    <delete id="deleteBusArtificialPatrolByIds" parameterType="String">
+        delete from bus_artificial_patrol where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

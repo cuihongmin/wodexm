@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.syswarn.mapper.BusWarnRecoldMapper">
+    
+    <resultMap type="com.wanqiao.mogao.project.syswarn.domain.BusWarnRecold" id="BusWarnRecoldResult">
+        <result property="id"    column="id"    />
+        <result property="warnTime"    column="warn_time"    />
+        <result property="warnType"    column="warn_type"    />
+        <result property="warnLevel"    column="warn_level"    />
+        <result property="warnState"    column="warn_state"    />
+        <result property="dataSourceId"    column="data_source_id"    />
+        <result property="warnSourceId"    column="warn_source_id"    />
+        <result property="relieveWarnTime"    column="relieve_warn_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+
+    </resultMap>
+
+    <sql id="selectBusWarnRecoldVo">
+        select id, warn_time, warn_type, warn_level, warn_state, warn_source_id, data_source_id, relieve_warn_time, create_time, remark from bus_warn_recold
+    </sql>
+
+    <select id="selectBusWarnRecoldList" parameterType="com.wanqiao.mogao.project.syswarn.domain.BusWarnRecold" resultMap="BusWarnRecoldResult">
+        SELECT
+            r.*, s.name warnSourceName
+        FROM
+            bus_warn_recold r
+        LEFT JOIN bus_warn_source_type s ON r.warn_source_id = s.id
+        <where>  
+            <if test="warnTime != null "> and r.warn_time = #{warnTime}</if>
+            <if test="warnType != null  and warnType != ''"> and r.warn_type = #{warnType}</if>
+            <if test="warnLevel != null "> and r.warn_level = #{warnLevel}</if>
+            <if test="warnState != null "> and r.warn_state = #{warnState}</if>
+            <if test="dataSourceId != null "> and r.data_source_id = #{dataSourceId}</if>
+            <if test="warnSourceId != null "> and r.warn_source_id = #{warnSourceId}</if>
+            <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(r.warn_time,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
+            </if>
+            <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+                and date_format(r.warn_time,'%y%m%d') &lt;= date_format(#{endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectBusWarnRecoldById" parameterType="Long" resultMap="BusWarnRecoldResult">
+        <include refid="selectBusWarnRecoldVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusWarnRecold" parameterType="com.wanqiao.mogao.project.syswarn.domain.BusWarnRecold">
+        insert into bus_warn_recold
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="warnTime != null">warn_time,</if>
+            <if test="warnType != null">warn_type,</if>
+            <if test="warnLevel != null">warn_level,</if>
+            <if test="warnState != null">warn_state,</if>
+            <if test="dataSourceId != null">data_source_id,</if>
+            <if test="warnSourceId != null">warn_source_id,</if>
+            <if test="relieveWarnTime != null">relieve_warn_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="warnTime != null">#{warnTime},</if>
+            <if test="warnType != null">#{warnType},</if>
+            <if test="warnLevel != null">#{warnLevel},</if>
+            <if test="warnState != null">#{warnState},</if>
+            <if test="dataSourceId != null">#{dataSourceId},</if>
+            <if test="warnSourceId != null">#{warnSourceId},</if>
+            <if test="relieveWarnTime != null">#{relieveWarnTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusWarnRecold" parameterType="com.wanqiao.mogao.project.syswarn.domain.BusWarnRecold">
+        update bus_warn_recold
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="warnTime != null">warn_time = #{warnTime},</if>
+            <if test="warnType != null">warn_type = #{warnType},</if>
+            <if test="warnLevel != null">warn_level = #{warnLevel},</if>
+            <if test="warnState != null">warn_state = #{warnState},</if>
+            <if test="dataSourceId != null">data_source_id = #{dataSourceId},</if>
+            <if test="relieveWarnTime != null">relieve_warn_time = #{relieveWarnTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusWarnRecoldById" parameterType="Long">
+        delete from bus_warn_recold where id = #{id}
+    </delete>
+
+    <delete id="deleteBusWarnRecoldByIds" parameterType="String">
+        delete from bus_warn_recold where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

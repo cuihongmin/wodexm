@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       
+    <!-- 配置可参考 http://dubbo.io/User+Guide-zh.htm -->
+    <!-- 服务提供方应用名，用于计算依赖关系 -->
+    <dubbo:application name="user-service" owner="user-service" />
+    
+    <!-- 定义 zookeeper 注册中心地址及协议 -->
+    <dubbo:registry protocol="zookeeper" address="${zookeeper.address}" client="zkclient" />
+        
+    <!-- 定义 Dubbo 协议名称及使用的端口，dubbo 协议缺省端口为 20880，如果配置为 -1 或者没有配置 port，则会分配一个没有被占用的端口 -->
+    <dubbo:protocol name="dubbo" port="-1" />
+    
+    <dubbo:provider delay="-1" timeout="6000"  retries="0"/>
+      
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:service interface="com.cui.user.service.ProductService" ref="productServiceImpl"/>
+    <dubbo:service interface="com.cui.user.service.WdUserService" ref="userServiceImpl"/>
+    <dubbo:service interface="com.cui.user.service.ISysLogininforService" ref="sysLogininforServiceImpl"/>
+    <dubbo:service interface="com.cui.user.service.CertificatesFilesService" ref="certificatesFilesServiceImpl"/>
+    <dubbo:service interface="com.cui.user.service.ISysMenuService" ref="sysMenuServiceImpl"/>
+    <dubbo:service interface="com.cui.user.service.ISysRoleService" ref="sysRoleServiceImpl"/>
+<!--    <dubbo:service interface="com.cui.user.service.SysLoginService" ref="sysLoginServiceImpl"/>-->
+<!--    <dubbo:service interface="com.ycyh.account.service.AccountFlowService" ref="accountFlowServiceImpl"/>-->
+<!--    -->
+<!--    <dubbo:service interface="com.ycyh.account.service.AccountInvoiceService" ref="accountInvoiceServiceImpl"/>    -->
+    
+</beans>

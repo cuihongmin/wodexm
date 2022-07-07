@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.dfs.mapper.SysFileMapper">
+    
+    <resultMap type="SysFile" id="SysFileResult">
+        <result property="uid"    column="uid"    />
+        <result property="name"    column="name"    />
+        <result property="fileSuffix"    column="file_suffix"    />
+        <result property="url"    column="url"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="size"    column="size"    />
+        <result property="status"    column="status"    />
+        <result property="isDel"    column="is_del"    />
+    </resultMap>
+
+    <sql id="selectSysFileVo">
+        select uid, name, file_suffix, url, create_time, create_by, business_id, size, status, is_del from sys_file
+    </sql>
+
+    <select id="selectSysFileList" parameterType="SysFile" resultMap="SysFileResult">
+        <include refid="selectSysFileVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectSysFileById" parameterType="String" resultMap="SysFileResult">
+        <include refid="selectSysFileVo"/>
+        where uid = #{uid}
+    </select>
+
+    <select id="listFilesByBussinessId" parameterType="String" resultMap="SysFileResult">
+        <include refid="selectSysFileVo"/>
+        where business_id = #{businessId} and is_del ="1"
+    </select>
+        
+    <insert id="insertSysFile" parameterType="SysFile">
+        insert into sys_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null  and uid != ''">uid,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="fileSuffix != null  and fileSuffix != ''">file_suffix,</if>
+            <if test="url != null  and url != ''">url,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="businessId != null  and businessId != ''">business_id,</if>
+            <if test="size != null ">size,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="isDel != null  and isDel != ''">is_del,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null  and uid != ''">#{uid},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="fileSuffix != null  and fileSuffix != ''">#{fileSuffix},</if>
+            <if test="url != null  and url != ''">#{url},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="businessId != null  and businessId != ''">#{businessId},</if>
+            <if test="size != null ">#{size},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="isDel != null  and isDel != ''">#{isDel},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysFile" parameterType="SysFile">
+        update sys_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="fileSuffix != null  and fileSuffix != ''">file_suffix = #{fileSuffix},</if>
+            <if test="url != null  and url != ''">url = #{url},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="businessId != null  and businessId != ''">business_id = #{businessId},</if>
+            <if test="size != null ">size = #{size},</if>
+            <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="isDel != null  and isDel != ''">is_del = #{isDel},</if>
+        </trim>
+        where uid = #{uid}
+    </update>
+    <update id="updateSysFileDelByBusinessId" parameterType="SysFile">
+        update sys_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="isDel != null  and isDel != ''">is_del = #{isDel},</if>
+        </trim>
+        where business_id = #{businessId}
+    </update>
+
+    <delete id="deleteSysFileById" parameterType="String">
+        delete from sys_file where uid = #{uid}
+    </delete>
+
+    <delete id="deleteSysFileByBussinessId" parameterType="String">
+        delete from sys_file where business_id = #{businessId}
+    </delete>
+
+    <delete id="deleteSysFileByIds" parameterType="String">
+        delete from sys_file where uid in 
+        <foreach item="uid" collection="array" open="(" separator="," close=")">
+            #{uid}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.groupperiod.mapper.BusGroupManageMapper">
+    
+    <resultMap type="com.wanqiao.mogao.project.groupperiod.domain.BusGroupManage" id="BusGroupManageResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="ip"    column="ip"    />
+        <result property="port"    column="port"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBusGroupManageVo">
+        select id, name, ip, port, remark, create_by, create_time, update_by, update_time from bus_group_manage
+    </sql>
+
+    <select id="selectBusGroupManageList" parameterType="com.wanqiao.mogao.project.groupperiod.domain.BusGroupManage" resultMap="BusGroupManageResult">
+        <include refid="selectBusGroupManageVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="port != null "> and port = #{port}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusGroupManageById" parameterType="Long" resultMap="BusGroupManageResult">
+        <include refid="selectBusGroupManageVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusGroupManage" parameterType="com.wanqiao.mogao.project.groupperiod.domain.BusGroupManage">
+        insert into bus_group_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="ip != null">ip,</if>
+            <if test="port != null">port,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="port != null">#{port},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusGroupManage" parameterType="com.wanqiao.mogao.project.groupperiod.domain.BusGroupManage">
+        update bus_group_manage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusGroupManageById" parameterType="Long">
+        delete from bus_group_manage where id = #{id}
+    </delete>
+
+    <delete id="deleteBusGroupManageByIds" parameterType="String">
+        delete from bus_group_manage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

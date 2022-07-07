@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.equipmentmanage.mapper.BusSaturationLineDataMapper">
+    
+    <resultMap type="com.wanqiao.mogao.project.equipmentmanage.domain.BusSaturationLineData" id="BusSaturationLineDataResult">
+        <result property="id"    column="id"    />
+        <result property="temperature"    column="temperature"    />
+        <result property="deep"    column="deep"    />
+        <result property="pressure"    column="pressure"    />
+        <result property="indexId"    column="index_id"    />
+        <result property="osmometerId"    column="osmometer_id"    />
+        <result property="saturationLineValue"    column="saturation_line_value"    />
+        <result property="saturationLineVerifyValue"    column="saturation_line_verify_value"    />
+        <result property="lineLength"    column="line_length"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="modifyTime"    column="modify_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="modifyBy"    column="modify_by"    />
+        <result property="warn"    column="warn"    />
+        <result property="yellowAlarm" column="yellow_alarm"/>
+        <result property="redAlarm" column="red_alarm"/>
+        <result property="orangeAlarm" column="orange_alarm"/>
+        <result property="indexName" column="index_name"/>
+        <result property="detectionTypeName" column="detection_type_name"/>
+    </resultMap>
+
+    <sql id="selectBusSaturationLineDataVo">
+        select id, temperature, deep, pressure, index_id, osmometer_id, saturation_line_value, saturation_line_verify_value, line_length, create_time, modify_time, create_by, modify_by, warn from bus_saturation_line_data
+    </sql>
+
+    <select id="selectBusSaturationLineDataList" parameterType="com.wanqiao.mogao.project.equipmentmanage.domain.BusSaturationLineData" resultMap="BusSaturationLineDataResult">
+        SELECT
+            l.*,
+            o.yellow_alarm,
+            o.red_alarm,
+            o.orange_alarm ,
+            i.name index_name,
+            t.name detection_type_name
+        FROM
+            bus_saturation_line_data l
+        LEFT JOIN bus_osmometer o ON o.id = l.osmometer_id
+        LEFT JOIN bus_detection_index i on i.id = l.index_id
+        LEFT JOIN bus_detection_type t on t.id = o.detection_type_id
+        <where>  
+            <if test="temperature != null "> and l.temperature = #{temperature}</if>
+            <if test="deep != null "> and l.deep = #{deep}</if>
+            <if test="pressure != null "> and l.pressure = #{pressure}</if>
+            <if test="indexId != null "> and l.index_id = #{indexId}</if>
+            <if test="osmometerId != null "> and l.osmometer_id = #{osmometerId}</if>
+            <if test="saturationLineValue != null "> and l.saturation_line_value = #{saturationLineValue}</if>
+            <if test="saturationLineVerifyValue != null "> and l.saturation_line_verify_value = #{saturationLineVerifyValue}</if>
+            <if test="lineLength != null "> and l.line_length = #{lineLength}</if>
+            <if test="modifyTime != null "> and l.modify_time = #{modifyTime}</if>
+            <if test="modifyBy != null "> and l.modify_by = #{modifyBy}</if>
+            <if test="warn != null "> and l.warn = #{warn}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusSaturationLineDataById" parameterType="Long" resultMap="BusSaturationLineDataResult">
+        <include refid="selectBusSaturationLineDataVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusSaturationLineData" parameterType="com.wanqiao.mogao.project.equipmentmanage.domain.BusSaturationLineData">
+        insert into bus_saturation_line_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="deep != null">deep,</if>
+            <if test="pressure != null">pressure,</if>
+            <if test="indexId != null">index_id,</if>
+            <if test="osmometerId != null">osmometer_id,</if>
+            <if test="saturationLineValue != null">saturation_line_value,</if>
+            <if test="saturationLineVerifyValue != null">saturation_line_verify_value,</if>
+            <if test="lineLength != null">line_length,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="modifyTime != null">modify_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="modifyBy != null">modify_by,</if>
+            <if test="warn != null">warn,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="deep != null">#{deep},</if>
+            <if test="pressure != null">#{pressure},</if>
+            <if test="indexId != null">#{indexId},</if>
+            <if test="osmometerId != null">#{osmometerId},</if>
+            <if test="saturationLineValue != null">#{saturationLineValue},</if>
+            <if test="saturationLineVerifyValue != null">#{saturationLineVerifyValue},</if>
+            <if test="lineLength != null">#{lineLength},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="modifyTime != null">#{modifyTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="modifyBy != null">#{modifyBy},</if>
+            <if test="warn != null">#{warn},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusSaturationLineData" parameterType="com.wanqiao.mogao.project.equipmentmanage.domain.BusSaturationLineData">
+        update bus_saturation_line_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="temperature != null">temperature = #{temperature},</if>
+            <if test="deep != null">deep = #{deep},</if>
+            <if test="pressure != null">pressure = #{pressure},</if>
+            <if test="indexId != null">index_id = #{indexId},</if>
+            <if test="osmometerId != null">osmometer_id = #{osmometerId},</if>
+            <if test="saturationLineValue != null">saturation_line_value = #{saturationLineValue},</if>
+            <if test="saturationLineVerifyValue != null">saturation_line_verify_value = #{saturationLineVerifyValue},</if>
+            <if test="lineLength != null">line_length = #{lineLength},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="modifyTime != null">modify_time = #{modifyTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="modifyBy != null">modify_by = #{modifyBy},</if>
+            <if test="warn != null">warn = #{warn},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusSaturationLineDataById" parameterType="Long">
+        delete from bus_saturation_line_data where id = #{id}
+    </delete>
+
+    <delete id="deleteBusSaturationLineDataByIds" parameterType="String">
+        delete from bus_saturation_line_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

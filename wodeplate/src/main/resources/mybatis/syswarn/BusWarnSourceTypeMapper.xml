@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.syswarn.mapper.BusWarnSourceTypeMapper">
+    
+    <resultMap type="BusWarnSourceType" id="BusWarnSourceTypeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBusWarnSourceTypeVo">
+        select id, name, remark from bus_warn_source_type
+    </sql>
+
+    <select id="selectBusWarnSourceTypeList" parameterType="BusWarnSourceType" resultMap="BusWarnSourceTypeResult">
+        <include refid="selectBusWarnSourceTypeVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBusWarnSourceTypeById" parameterType="Long" resultMap="BusWarnSourceTypeResult">
+        <include refid="selectBusWarnSourceTypeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusWarnSourceType" parameterType="BusWarnSourceType">
+        insert into bus_warn_source_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusWarnSourceType" parameterType="BusWarnSourceType">
+        update bus_warn_source_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusWarnSourceTypeById" parameterType="Long">
+        delete from bus_warn_source_type where id = #{id}
+    </delete>
+
+    <delete id="deleteBusWarnSourceTypeByIds" parameterType="String">
+        delete from bus_warn_source_type where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

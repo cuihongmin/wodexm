@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+        
+    <!-- 定义 Dubbo 协议名称及使用的端口，dubbo 协议缺省端口为 20880，如果配置为 -1 或者没有配置 port，则会分配一个没有被占用的端口 -->
+    <dubbo:protocol name="dubbo" port="-1" />
+    
+    <dubbo:provider delay="-1" timeout="30000"  retries="0"/>
+    
+    <!-- 声明需要暴露的服务接口 -->
+<!--    <dubbo:service interface="com.cui.plateweb.comm.manage ref="AsyncManager"/>-->
+
+<!--    <dubbo:service interface="com.ycyh.user.service.WebSocketService" ref="webSocketServiceImpl"/>-->
+
+</beans>

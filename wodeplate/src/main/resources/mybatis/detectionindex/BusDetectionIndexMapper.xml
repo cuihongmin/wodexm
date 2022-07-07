@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.detectionindex.mapper.BusDetectionIndexMapper">
+    
+    <resultMap type="BusDetectionIndex" id="BusDetectionIndexResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="priority"    column="priority"    />
+        <result property="remark"    column="remark"    />
+        <result property="detectionIndexTypeId"    column="detection_index_type_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="modifyBy"    column="modify_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="modifyTime"    column="modify_time"    />
+    </resultMap>
+
+    <sql id="selectBusDetectionIndexVo">
+        select id, name, priority, remark, detection_index_type_id, create_by, modify_by, create_time, modify_time from bus_detection_index
+    </sql>
+
+    <select id="selectBusDetectionIndexList" parameterType="BusDetectionIndex" resultMap="BusDetectionIndexResult">
+        <include refid="selectBusDetectionIndexVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="priority != null "> and priority = #{priority}</if>
+            <if test="detectionIndexTypeId != null "> and detection_index_type_id = #{detectionIndexTypeId}</if>
+            <if test="modifyBy != null "> and modify_by = #{modifyBy}</if>
+            <if test="modifyTime != null "> and modify_time = #{modifyTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusDetectionIndexById" parameterType="Long" resultMap="BusDetectionIndexResult">
+        <include refid="selectBusDetectionIndexVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusDetectionIndex" parameterType="BusDetectionIndex">
+        insert into bus_detection_index
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="priority != null">priority,</if>
+            <if test="remark != null">remark,</if>
+            <if test="detectionIndexTypeId != null">detection_index_type_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="modifyBy != null">modify_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="modifyTime != null">modify_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="priority != null">#{priority},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="detectionIndexTypeId != null">#{detectionIndexTypeId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="modifyBy != null">#{modifyBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="modifyTime != null">#{modifyTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusDetectionIndex" parameterType="BusDetectionIndex">
+        update bus_detection_index
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="priority != null">priority = #{priority},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="detectionIndexTypeId != null">detection_index_type_id = #{detectionIndexTypeId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="modifyBy != null">modify_by = #{modifyBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="modifyTime != null">modify_time = #{modifyTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusDetectionIndexById" parameterType="Long">
+        delete from bus_detection_index where id = #{id}
+    </delete>
+
+    <delete id="deleteBusDetectionIndexByIds" parameterType="String">
+        delete from bus_detection_index where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

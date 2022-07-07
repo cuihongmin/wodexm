@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.syswarn.mapper.BusWarnConfigMapper">
+    
+    <resultMap type="com.wanqiao.mogao.project.syswarn.domain.BusWarnConfig" id="BusWarnConfigResult">
+        <result property="id"    column="id"    />
+        <result property="warnLevel"    column="warn_level"    />
+        <result property="type"    column="type"    />
+        <result property="remak"    column="remak"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="modifyTime"    column="modify_time"    />
+        <result property="name"    column="name"    />
+        <collection property="alarmWay" ofType="com.wanqiao.mogao.project.publishfeedback.domain.BusAlarmWay">
+            <id property="id" column="way_id"/>
+            <result property="code" column="code"/>
+            <result property="name" column="way_name"/>
+        </collection>
+        <collection property="safetyPeople" ofType="com.wanqiao.mogao.project.publishfeedback.domain.BusSafetyPeople">
+            <id property="id" column="safety_people_id"/>
+            <result property="name" column="safety_people_name"/>
+        </collection>
+    </resultMap>
+
+    <sql id="selectBusWarnConfigVo">
+        select id, warn_level, name,type, remak, create_time, modify_time from bus_warn_config
+    </sql>
+
+    <select id="selectBusWarnConfigList" parameterType="com.wanqiao.mogao.project.syswarn.domain.BusWarnConfig" resultMap="BusWarnConfigResult">
+        SELECT
+            c.*, sp.id safety_people_id , sp.name safety_people_name, w.id way_id, w.name way_name
+        FROM
+            bus_warn_config c
+        LEFT JOIN bus_warn_config_warn_type_relat r ON r.warn_config_id = c.id
+        LEFT JOIN bus_warn_safety_people p on p.config_id = c.id
+        LEFT JOIN bus_safety_people sp on sp.id = p.safety_by
+        LEFT JOIN bus_alarm_way w on w.id = r.warn_type_id
+        <where>  
+            <if test="warnLevel != null "> and c.warn_level = #{warnLevel}</if>
+            <if test="type != null "> and c.type = #{type}</if>
+            <if test="remak != null  and remak != ''"> and c.remak = #{remak}</if>
+            <if test="modifyTime != null "> and c.modify_time = #{modifyTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusWarnConfigById" parameterType="Long" resultMap="BusWarnConfigResult">
+        <include refid="selectBusWarnConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusWarnConfig" parameterType="BusWarnConfig">
+        insert into bus_warn_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="warnLevel != null">warn_level,</if>
+            <if test="type != null">type,</if>
+            <if test="remak != null">remak,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="modifyTime != null">modify_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="warnLevel != null">#{warnLevel},</if>
+            <if test="type != null">#{type},</if>
+            <if test="remak != null">#{remak},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="modifyTime != null">#{modifyTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusWarnConfig" parameterType="BusWarnConfig">
+        update bus_warn_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="warnLevel != null">warn_level = #{warnLevel},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="remak != null">remak = #{remak},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="modifyTime != null">modify_time = #{modifyTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusWarnConfigById" parameterType="Long">
+        delete from bus_warn_config where id = #{id}
+    </delete>
+
+    <delete id="deleteBusWarnConfigByIds" parameterType="String">
+        delete from bus_warn_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+    <select id="findAlarmWayByConfigId"  resultType="com.wanqiao.mogao.project.publishfeedback.domain.BusAlarmWay">
+        SELECT
+          w.*
+        FROM
+            bus_warn_config c
+            INNER JOIN  bus_warn_config_warn_type_relat r ON r.warn_config_id = c.id
+            INNER JOIN bus_alarm_way w on w.id = r.warn_type_id
+        where c.id = #{id}
+    </select>
+
+    <select id="findSafteyPeopleByConfigId" resultType="com.wanqiao.mogao.project.publishfeedback.domain.BusSafetyPeople">
+        SELECT
+            sp.id, sp.name, sp.code
+        FROM
+            bus_warn_config c
+            INNER  JOIN bus_warn_safety_people p ON p.config_id = c.id
+            INNER JOIN bus_safety_people sp ON sp.id = p.safety_by
+            where c.id = #{id}
+    </select>
+</mapper>

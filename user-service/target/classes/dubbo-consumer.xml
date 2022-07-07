@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <!-- 提供方应用信息 -->
+    <dubbo:registry protocol="zookeeper" address="${zookeeper.address}" client="zkclient" />
+    <dubbo:consumer check="false" />
+    <!-- 声明需要暴露的服务接口 -->
+<!--    <dubbo:reference id="userService" interface="com.cui.user.service.WdUserService" />-->
+
+
+
+<!--    <dubbo:reference id="unionB2BPayService" interface="com.ycyh.pay.service.UnionB2BPayService" />-->
+<!--    -->
+<!--    <dubbo:reference id="unionB2CPayService" interface="com.ycyh.pay.service.UnionB2CPayService" />-->
+<!--    -->
+<!--    <dubbo:reference id="weixinService" interface="com.ycyh.pay.service.WeixinService" />-->
+<!--    -->
+<!--    <dubbo:reference id="userService" interface="com.ycyh.user.service.UserService" />-->
+<!--    -->
+<!--    <dubbo:reference id="userBankService" interface="com.ycyh.user.service.UserBankService" />-->
+<!--    -->
+<!--    <dubbo:reference id="logisticsMarketOrderService" interface="com.ycyh.logistics.service.LogisticsMarketOrderService" />-->
+<!--    -->
+<!--    <dubbo:reference id="tradeBidBondService" interface="com.ycyh.trade.service.TradeBidBondService" />-->
+<!--    <dubbo:reference interface="com.ycyh.logistics.service.LogisticsOrderWaybillService" id="logisticsOrderWaybillService"/>-->
+<!--    <dubbo:reference interface="com.ycyh.logistics.service.LogisticsLineService" id="logisticsLineService"/>-->
+    
+</beans>

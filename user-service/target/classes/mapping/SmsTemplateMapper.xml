@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cui.user.dao.SmsTemplateMapper">
+    <!-- SmsTemplate的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_SmsTemplate_Map" type="com.cui.user.entity.SmsTemplate">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="creater" property="creater" />
+        <result column="content" property="content" />
+        <result column="type_key" property="typeKey" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 获得一个SmsTemplate对象,以参数SmsTemplate对象中不为空的属性作为条件进行查询-->
+    <select id="selectSmsTemplateByKey" resultMap="result_SmsTemplate_Map">
+        select * from sms_template
+        <where>
+           sms_template.type_key = #{typeKey} and status = 1
+        </where>
+    </select> 
+
+   
+
+</mapper>

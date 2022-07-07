@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.publishfeedback.mapper.BusAlarmMapper">
+    
+    <resultMap type="BusAlarm" id="BusAlarmResult">
+        <result property="id"    column="id"    />
+        <result property="alarmWayId"    column="alarm_way_id"    />
+        <result property="safetyId"    column="safety_id"    />
+        <result property="warnLevelId"    column="warn_level_id"    />
+        <result property="content"    column="content"    />
+        <result property="sendState"    column="send_state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="safetyName"    column="safetyName"    />
+        <result property="safetyCode"    column="safetyCode"    />
+        <result property="mobilePhone"    column="mobile_phone"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="positionName"    column="post_name"    />
+        <result property="recordLoadUser"    column="nick_name"    />
+        <result property="warnLevel"    column="warn_level_name"    />
+        <result property="sendState"    column="send_state"    />
+        <result property="sendType"    column="send_type"    />
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="selectBusAlarmVo">
+        select id, alarm_way_id, safety_id,  warn_level_id, content, send_state, create_time, create_by from bus_alarm
+    </sql>
+
+    <select id="selectBusAlarmList" parameterType="BusAlarm" resultMap="BusAlarmResult">
+        SELECT
+            a.id,
+            a.content,
+            a.send_type,
+            a.send_state,
+            a.create_time,
+            s.NAME safetyName,
+            s.CODE safetyCode,
+            s.mobile_phone,
+            s.email,
+            d.dept_name,
+            p.post_name,
+            u.nick_name ,
+            l.name warn_level_name
+        FROM
+            bus_alarm a
+        LEFT JOIN bus_safety_people s ON s.id = a.safety_id
+        LEFT JOIN sys_dept d ON d.dept_id = s.dept_Id
+        LEFT JOIN sys_post p ON p.post_id = s.position_id
+        LEFT JOIN sys_user u ON u.user_id = a.create_by
+        LEFT JOIN bus_warn_level l on l.id = a.warn_level_id
+        <where>  
+            <if test="alarmWayId != null "> and a.alarm_way_id = #{alarmWayId}</if>
+            <if test="safetyId != null "> and a.safety_id = #{safetyId}</if>
+            <if test="deptName != null "> and d.dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="warnLevelId != null "> and a.warn_level_id = #{warnLevelId}</if>
+            <if test="sendState != null "> and a.send_state = #{sendState}</if>
+            <if test="sendType != null "> and a.send_type = #{sendType}</if>
+            <if test="mobilePhone != null "> and s.mobile_phone = #{mobilePhone}</if>
+            <if test="safetyCode != null "> and s.code like concat('%', #{safetyCode}, '%')</if>
+            <if test="safetyName != null "> and s.name like concat('%', #{safetyName}, '%')</if>
+            <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(a.create_time,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
+            </if>
+            <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+                and date_format(a.create_time,'%y%m%d') &lt;= date_format(#{endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectBusAlarmById" parameterType="Long" resultMap="BusAlarmResult">
+        <include refid="selectBusAlarmVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusAlarm" parameterType="BusAlarm">
+        insert into bus_alarm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="alarmWayId != null">alarm_way_id,</if>
+            <if test="safetyId != null">safety_id,</if>
+            <if test="warnLevelId != null">warn_level_id,</if>
+            <if test="content != null">content,</if>
+            <if test="sendState != null">send_state,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="sendType != null">send_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="alarmWayId != null">#{alarmWayId},</if>
+            <if test="safetyId != null">#{safetyId},</if>
+            <if test="warnLevelId != null">#{warnLevelId},</if>
+            <if test="content != null">#{content},</if>
+            <if test="sendState != null">#{sendState},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="sendType != null">#{sendType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusAlarm" parameterType="BusAlarm">
+        update bus_alarm
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alarmWayId != null">alarm_way_id = #{alarmWayId},</if>
+            <if test="safetyId != null">safety_id = #{safetyId},</if>
+            <if test="warnLevelId != null">warn_level_id = #{warnLevelId},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="sendState != null">send_state = #{sendState},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusAlarmById" parameterType="Long">
+        delete from bus_alarm where id = #{id}
+    </delete>
+
+    <delete id="deleteBusAlarmByIds" parameterType="String">
+        delete from bus_alarm where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

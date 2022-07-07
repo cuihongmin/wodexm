@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cui.user.dao.SmsSendLogsDao">
+    <!-- SmsSendLogs的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_SmsSendLogs_Map" type="com.cui.user.entity.SmsSendLogs">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="mobile" property="mobile" />
+        <result column="content" property="content" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 数据库中表名为:sms_send_logs的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="sms_send_logs_Column">
+        sms_send_logs.id as id
+        ,sms_send_logs.create_time as create_time
+        ,sms_send_logs.mobile as mobile
+        ,sms_send_logs.content as content
+    </sql>
+
+    <!--获得类名为:SmsSendLogs对应的数据库表的数据总行数 -->
+    <select id="getSmsSendLogsRowCount" resultType="java.lang.Long">
+        select count(id) from sms_send_logs
+    </select>
+    <!-- 获得类名为:SmsSendLogs对应数据库中表的数据集合 -->
+    <select id="selectSmsSendLogs" resultMap="result_SmsSendLogs_Map">
+        select 
+        <include refid="sms_send_logs_Column" /> 
+        from sms_send_logs
+    </select> 
+
+    <!-- 获得一个SmsSendLogs对象,以参数SmsSendLogs对象中不为空的属性作为条件进行查询-->
+    <select id="selectSmsSendLogsByObj" parameterType="com.cui.user.entity.SmsSendLogs" resultMap="result_SmsSendLogs_Map">
+        select 
+            <include refid="sms_send_logs_Column" /> 
+        from sms_send_logs
+        <where>
+            <if test="content != null "> and sms_send_logs.content = #{content}</if>
+            <if test="mobile != null "> and sms_send_logs.mobile = #{mobile}</if>
+            <if test="createTime != null "> and sms_send_logs.create_time = #{createTime}</if>
+            <if test="id != null "> and sms_send_logs.id = #{id}</if>
+        </where>
+    </select> 
+
+    <!-- 通过SmsSendLogs的id获得对应数据库中表的数据对象-->
+    <select id="selectSmsSendLogsById" parameterType="java.lang.Integer" resultMap="result_SmsSendLogs_Map">
+        select 
+            <include refid="sms_send_logs_Column" /> 
+        from sms_send_logs
+        where sms_send_logs.id = #{id}
+    </select> 
+
+    <!-- 将SmsSendLogs插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertSmsSendLogs" parameterType="com.cui.user.entity.SmsSendLogs">
+        insert into sms_send_logs(id,create_time,mobile,content,status) 
+        values(#{id},#{createTime},#{mobile},#{content},#{status})
+    </insert>
+
+    <!-- 将SmsSendLogs中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptySmsSendLogs" parameterType="com.cui.user.entity.SmsSendLogs">
+        insert into sms_send_logs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="content != null">content,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id},</if>
+            <if test="createTime != null"> #{createTime},</if>
+            <if test="mobile != null"> #{mobile},</if>
+            <if test="content != null"> #{content},</if>
+        </trim>
+    </insert>
+
+    <!-- 将SmsSendLogs批量插入到对应数据库的表中-->
+    <insert id="insertSmsSendLogsByBatch" parameterType="ArrayList">
+        insert into sms_send_logs(id,create_time,mobile,content) values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.id},#{item.createTime},#{item.mobile},#{item.content})
+        </foreach>
+    </insert>
+
+    <!-- 通过SmsSendLogs的id将数据库表中对应的数据删除-->
+    <delete id="deleteSmsSendLogsById" parameterType="java.lang.Integer">
+        delete from sms_send_logs
+        where id = #{id}
+    </delete>
+
+    <!-- 通过SmsSendLogs的id将SmsSendLogs的数据更新到数据库中对应的表,包括值null的数据-->
+    <update id="updateSmsSendLogsById" parameterType="com.cui.user.entity.SmsSendLogs">
+        update sms_send_logs set
+            create_time=#{createTime}
+            ,mobile=#{mobile}
+            ,content=#{content}
+        where id=#{id}
+    </update>
+
+    <!-- 通过SmsSendLogs的id将SmsSendLogs中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptySmsSendLogsById" parameterType="com.cui.user.entity.SmsSendLogs">
+        update sms_send_logs
+        <set>
+            <if test="createTime != null">
+                create_time=#{createTime},
+            </if>
+            <if test="mobile != null">
+                mobile=#{mobile},
+            </if>
+            <if test="content != null">
+                content=#{content},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

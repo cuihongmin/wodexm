@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanqiao.mogao.project.publishfeedback.mapper.BusSafetyPeopleMapper">
+    
+    <resultMap type="BusSafetyPeople" id="BusSafetyPeopleResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="relevanceUserId"    column="relevance_user_id"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="code"    column="code"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="positionName"    column="post_name"    />
+        <result property="positionId"    column="position_id"    />
+        <result property="mobilePhone"    column="mobile_phone"    />
+        <result property="email"    column="email"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="modifyTime"    column="modify_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="modifyBy"    column="modify_by"    />
+    </resultMap>
+
+    <sql id="selectBusSafetyPeopleVo">
+        select id, name, relevance_user_id, code, dept_id, position_id, mobile_phone, email, remark, create_time, modify_time, create_by, modify_by from bus_safety_people
+    </sql>
+
+    <select id="selectBusSafetyPeopleList" parameterType="BusSafetyPeople" resultMap="BusSafetyPeopleResult">
+        SELECT
+            p.*,
+            t.post_name ,
+            d.dept_name
+            FROM
+            bus_safety_people p
+        LEFT JOIN sys_dept d ON p.dept_id = d.dept_id
+        left join sys_post t on t.post_id = p.position_id
+
+    <where>
+            <if test="name != null  and name != ''"> and p.name like concat('%', #{name}, '%')</if>
+            <if test="relevanceUserId != null "> and p.relevance_user_id = #{relevanceUserId}</if>
+            <if test="code != null  and code != ''"> and p.code = #{code}</if>
+            <if test="deptId != null "> and p.dept_id = #{deptId}</if>
+            <if test="positionId != null "> and p.position_id = #{positionId}</if>
+            <if test="mobilePhone != null  and mobilePhone != ''"> and p.mobile_phone = #{mobilePhone}</if>
+            <if test="email != null  and email != ''"> and p.email = #{email}</if>
+            <if test="modifyTime != null "> and p.modify_time = #{modifyTime}</if>
+            <if test="modifyBy != null "> and p.modify_by = #{modifyBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusSafetyPeopleById" parameterType="Long" resultMap="BusSafetyPeopleResult">
+        <include refid="selectBusSafetyPeopleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusSafetyPeople" parameterType="BusSafetyPeople" useGeneratedKeys="true" keyProperty="id">
+        insert into bus_safety_people
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="relevanceUserId != null">relevance_user_id,</if>
+            <if test="code != null">code,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="positionId != null">position_id,</if>
+            <if test="mobilePhone != null">mobile_phone,</if>
+            <if test="email != null">email,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="modifyTime != null">modify_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="modifyBy != null">modify_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="relevanceUserId != null">#{relevanceUserId},</if>
+            <if test="code != null">#{code},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="positionId != null">#{positionId},</if>
+            <if test="mobilePhone != null">#{mobilePhone},</if>
+            <if test="email != null">#{email},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="modifyTime != null">#{modifyTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="modifyBy != null">#{modifyBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusSafetyPeople" parameterType="BusSafetyPeople">
+        update bus_safety_people
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="relevanceUserId != null">relevance_user_id = #{relevanceUserId},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="positionId != null">position_id = #{positionId},</if>
+            <if test="mobilePhone != null">mobile_phone = #{mobilePhone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="modifyTime != null">modify_time = #{modifyTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="modifyBy != null">modify_by = #{modifyBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusSafetyPeopleById" parameterType="Long">
+        delete from bus_safety_people where id = #{id}
+    </delete>
+
+    <delete id="deleteBusSafetyPeopleByIds" parameterType="String">
+        delete from bus_safety_people where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
