@@ -21,7 +21,7 @@ public class aaa {
         String str = null;
 
         System.out.println("请输入字符串:");
-
+        // 验证git
 
         System.out.println(str);
     }
