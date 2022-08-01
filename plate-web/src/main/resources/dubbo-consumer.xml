@@ -19,6 +19,7 @@
     <dubbo:reference id="certificatesFilesService" interface="com.cui.user.service.CertificatesFilesService"/>
     <dubbo:reference id="iSysMenuService" interface="com.cui.user.service.ISysMenuService"/>
     <dubbo:reference id="iSysRoleService" interface="com.cui.user.service.ISysRoleService"/>
+    <dubbo:reference id="iSysUserService" interface="com.cui.user.service.ISysUserService"/>
 <!--    <dubbo:reference id="sysLoginService" interface="com.cui.user.service.SysLoginService"/>-->
 <!--    <dubbo:reference id="userAddressService" interface="com.ycyh.user.service.UserAddressService"/>-->
 <!--    <dubbo:reference id="userAuthService" interface="com.ycyh.user.service.UserAuthService"/>-->
