@@ -25,6 +25,7 @@
     <dubbo:service interface="com.cui.user.service.CertificatesFilesService" ref="certificatesFilesServiceImpl"/>
     <dubbo:service interface="com.cui.user.service.ISysMenuService" ref="sysMenuServiceImpl"/>
     <dubbo:service interface="com.cui.user.service.ISysRoleService" ref="sysRoleServiceImpl"/>
+    <dubbo:service interface="com.cui.user.service.ISysUserService" ref="sysUserServiceImpl"/>
 <!--    <dubbo:service interface="com.cui.user.service.SysLoginService" ref="sysLoginServiceImpl"/>-->
 <!--    <dubbo:service interface="com.ycyh.account.service.AccountFlowService" ref="accountFlowServiceImpl"/>-->
 <!--    -->
