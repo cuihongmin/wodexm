@@ -17,6 +17,7 @@ import java.io.IOException;
 public class MyRunnable implements Runnable{
     String name = "";
     @Override
+    // 注void不带返回值 如果需要返回值就不能是void
     public void run () {
         System.out.println("开始");
         name = Thread.currentThread().getName(); // 多个同时可以共享name属性（操作name属性）
