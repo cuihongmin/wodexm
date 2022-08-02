@@ -14,6 +14,7 @@ import com.cui.plateweb.factory.service.SysPermissionService;
 import com.cui.user.entity.LoginBody;
 //import com.cui.plateweb.factory.LoginUser;
 import com.cui.plateweb.factory.service.SysLoginService;
+import com.cui.user.entity.PostMan;
 import com.cui.user.entity.SysUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -105,6 +106,27 @@ public class SysController {
         base.setCode(200);
         base.setSuccess(true);
         return base;
+    }
+
+    @ApiOperation(value = "自写接口用于postman的测试")
+    @PostMapping("/postman")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名称", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "password", value = "密码", required = true, dataType = "String"),
+//            @ApiImplicitParam(paramType = "query", name = "code", value = "图片验证码", required = true, dataType = "String"),
+//            @ApiImplicitParam(paramType = "query", name = "uuid", value = "uuid", required = true, dataType = "String"),
+            /*@ApiImplicitParam(paramType = "query",name = "imageCode", value = "图形验证码", required = true, dataType = "String"),*/
+            /*@ApiImplicitParam(paramType = "query",name = "key", value = "验证码key", required = true, dataType = "String")*/
+    })
+    public BaseResult getPostman(PostMan postMan) {
+        BaseResult base = new BaseResult();
+        System.out.println(postMan);
+        base.setData(postMan);
+        base.setCode(200);
+        base.setSuccess(true);
+        return base;
+
+
     }
 
 }
