@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 /**
- * @Descripttion 面试题
+ * @Descripttion 测试github
  * @Author cuihongmin
  * @Date 2022/6/23 16:30
  */
