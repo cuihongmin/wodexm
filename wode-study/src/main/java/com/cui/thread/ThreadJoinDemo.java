@@ -5,6 +5,8 @@ package com.cui.thread;
  * @Author cuihongmin
  * @Date 2022/8/2 17:18
  */
+
+// join方法是保证线程执行顺序的一种简单的方式
 public class ThreadJoinDemo {
     public static void main(String[] args) throws InterruptedException {
         Thread t1 = new Thread(()->{
