@@ -32,7 +32,7 @@ public class MyTask implements Runnable{
 
     @Override
     public void run() {
-        System.out.println("runtaskId="+this.taskId + ",Thread:" + Thread.currentThread().getId());
+        System.out.println("runtaskId="+this.taskId + ",Thread:" + Thread.currentThread().getId() + ",runtaskName:" + this.taskName);
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
