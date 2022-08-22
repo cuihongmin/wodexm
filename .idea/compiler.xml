@@ -6,19 +6,23 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="wodeplate" />
-        <module name="user-service" />
-        <module name="common" />
-        <module name="plate-web" />
         <module name="user-api" />
+        <module name="common" />
+        <module name="wodeplate" />
+        <module name="bsxm" />
+        <module name="user-service" />
+        <module name="wode-study" />
+        <module name="plate-web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="bsxm" target="1.8" />
       <module name="usersevice" target="1.5" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="bsxm" options="-parameters" />
       <module name="plate-web" options="-parameters" />
       <module name="user-api" options="-parameters" />
       <module name="user-service" options="-parameters" />
